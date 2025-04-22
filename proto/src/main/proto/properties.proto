@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package dev.matvenoid.proto;
+
+option java_multiple_files = true;
+
+message Property {
+  int64 id = 1;
+  string address = 2;
+  float price = 3;
+  string description = 4;
+  bool is_available = 5;
+}
+
+message GetPropertiesRequest {}
+
+message GetPropertiesResponse {
+  repeated Property property = 1;
+}

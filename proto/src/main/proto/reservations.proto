@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package dev.matvenoid.proto;
+
+option java_multiple_files = true;
+
+message Reservation {
+  int64 id = 1;
+  string start_date = 2;
+  string end_date = 3;
+  int64 user_id = 4;
+  int64 property_id = 5;
+}
+
+message GetReservationsRequest {}
+
+message GetReservationsResponse {
+  repeated Reservation reservation = 1;
+}

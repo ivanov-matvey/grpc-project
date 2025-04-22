@@ -1,0 +1,13 @@
+services:
+  postgresql:
+    image: docker.io/bitnami/postgresql:latest
+    container_name: grpc-kotlin-postgres
+    ports:
+      - '5001:5432'
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - 'kotlin-grpc-postgres-data:/var/lib/postgresql/data'
+
+volumes:
+  kotlin-grpc-postgres-data:

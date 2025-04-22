@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package dev.matvenoid.proto;
+
+option java_multiple_files = true;
+
+import "users.proto";
+import "properties.proto";
+import "reservations.proto";
+import "reviews.proto";
+
+service BookingService {
+  rpc GetUsers(GetUsersRequest) returns (GetUsersResponse);
+  rpc GetProperties(GetPropertiesRequest) returns (GetPropertiesResponse);
+  rpc GetReservations(GetReservationsRequest) returns (GetReservationsResponse);
+  rpc GetReviews(GetReviewsRequest) returns (GetReviewsResponse);
+}
