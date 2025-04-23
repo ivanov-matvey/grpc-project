@@ -1,0 +1,23 @@
+services:
+  postgresql:
+    image: postgres:latest
+    container_name: grpc-kotlin-postgres-container
+    ports:
+      - '5001:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=booking
+    volumes:
+      - grpc-kotlin-postgres-volume:/var/lib/postgresql/data
+    networks:
+      - grpc-kotlin-network
+
+volumes:
+  grpc-kotlin-postgres-volume:
+    name: grpc-kotlin-postgres-volume
+
+networks:
+  grpc-kotlin-network:
+    name: grpc-kotlin-network
+    driver: bridge
