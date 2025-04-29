@@ -4,14 +4,11 @@ import dev.matvenoid.models.property.PropertyDAO
 import dev.matvenoid.models.property.PropertyTable
 import dev.matvenoid.models.user.UserDAO
 import dev.matvenoid.models.user.UserTable
-import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.LongIdTable
-import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.kotlin.datetime.datetime
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 object ReviewTable: LongIdTable("reviews") {
     val rating = integer("rating")
@@ -33,9 +30,6 @@ class ReviewDAO(id: EntityID<Long>) : LongEntity(id) {
     var user by UserDAO referencedOn ReviewTable.userId
     var property by PropertyDAO referencedOn ReviewTable.propertyId
 }
-
-suspend fun <T> suspendTransaction(block: Transaction.() -> T): T =
-    newSuspendedTransaction(Dispatchers.IO, statement = block)
 
 fun daoToModel(dao: ReviewDAO) = Review(
     dao.id.value,

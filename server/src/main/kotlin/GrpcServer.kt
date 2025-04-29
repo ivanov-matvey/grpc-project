@@ -1,12 +1,15 @@
 package dev.matvenoid
 
 import dev.matvenoid.core.DatabaseFactory
-import dev.matvenoid.services.BookingService
+import dev.matvenoid.services.property.PropertyService
+import dev.matvenoid.services.reservation.ReservationService
+import dev.matvenoid.services.review.ReviewService
+import dev.matvenoid.services.user.UserService
 import io.grpc.ServerBuilder
 import org.slf4j.LoggerFactory
 
 fun main() {
-    val log = LoggerFactory.getLogger("GrpcServer")
+    val logger = LoggerFactory.getLogger("GrpcServer")
 
     DatabaseFactory.init()
 
@@ -14,16 +17,19 @@ fun main() {
 
     val server = ServerBuilder
         .forPort(port)
-        .addService(BookingService())
+        .addService(UserService(logger))
+        .addService(PropertyService(logger))
+        .addService(ReservationService(logger))
+        .addService(ReviewService(logger))
         .build()
         .start()
 
-    log.info("Server started, listening on $port")
+    logger.info("Server started, listening on $port")
 
     Runtime.getRuntime().addShutdownHook(Thread {
-        log.info("Shutting down server...")
+        logger.info("Shutting down server...")
         server.shutdown()
-        log.info("Server shut down")
+        logger.info("Server shut down")
     })
 
     server.awaitTermination()

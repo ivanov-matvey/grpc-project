@@ -1,31 +1,35 @@
 package dev.matvenoid
 
-import dev.matvenoid.proto.BookingServiceGrpcKt
 import dev.matvenoid.proto.GetPropertiesRequest
 import dev.matvenoid.proto.GetReservationsRequest
 import dev.matvenoid.proto.GetReviewsRequest
 import dev.matvenoid.proto.GetUsersRequest
+import dev.matvenoid.proto.PropertyServiceGrpc
+import dev.matvenoid.proto.ReservationServiceGrpc
+import dev.matvenoid.proto.ReviewServiceGrpc
+import dev.matvenoid.proto.UserServiceGrpc
 import io.grpc.ManagedChannelBuilder
 import org.slf4j.LoggerFactory
-import kotlinx.coroutines.runBlocking
 
-fun main(): Unit = runBlocking {
-    val log = LoggerFactory.getLogger("GrpcClient")
+fun main() {
+    val logger = LoggerFactory.getLogger("GrpcClient")
 
     val channel = ManagedChannelBuilder
         .forAddress("localhost", 8001)
         .usePlaintext()
         .build()
-    log.info("Channel created.")
+    logger.info("Channel created.")
 
-    val stub = BookingServiceGrpcKt.BookingServiceCoroutineStub(channel)
+    val userStub = UserServiceGrpc.newBlockingStub(channel)
+    val propertyStub = PropertyServiceGrpc.newBlockingStub(channel)
+    val reservationStub = ReservationServiceGrpc.newBlockingStub(channel)
+    val reviewStub = ReviewServiceGrpc.newBlockingStub(channel)
 
-    val userRequest = GetUsersRequest.newBuilder().build()
     try {
-        val response = stub.getUsers(userRequest)
-
+        val userRequest = GetUsersRequest.newBuilder().build()
+        val userResponse = userStub.getUsers(userRequest)
         println("Users list:")
-        response.usersList.forEach { user ->
+        userResponse.usersList.forEach { user ->
             println("id: ${user.id}," +
                     " name: ${user.name}," +
                     " phone: +7${user.phone}," +
@@ -33,15 +37,14 @@ fun main(): Unit = runBlocking {
             )
         }
     } catch (e: Exception) {
-        log.error(e.message, e)
+        logger.error(e.message, e)
     }
 
-    val propertyRequest = GetPropertiesRequest.newBuilder().build()
     try {
-        val response = stub.getProperties(propertyRequest)
-
+        val propertyRequest = GetPropertiesRequest.newBuilder().build()
+        val propertyResponse = propertyStub.getProperties(propertyRequest)
         println("Properties list:")
-        response.propertyList.forEach { property ->
+        propertyResponse.propertyList.forEach { property ->
             println("id: ${property.id}," +
                     " address: \"${property.address}\"," +
                     " price: ${property.price}," +
@@ -50,15 +53,14 @@ fun main(): Unit = runBlocking {
             )
         }
     } catch (e: Exception) {
-        log.error(e.message, e)
+        logger.error(e.message, e)
     }
 
-    val reservationRequest = GetReservationsRequest.newBuilder().build()
     try {
-        val response = stub.getReservations(reservationRequest)
-
+        val reservationRequest = GetReservationsRequest.newBuilder().build()
+        val reservationResponse = reservationStub.getReservations(reservationRequest)
         println("Reservations list:")
-        response.reservationList.forEach { reservation ->
+        reservationResponse.reservationList.forEach { reservation ->
             println("id: ${reservation.id}," +
                     " start_date: ${reservation.startDate}," +
                     " end_date: ${reservation.endDate}," +
@@ -67,28 +69,27 @@ fun main(): Unit = runBlocking {
             )
         }
     } catch (e: Exception) {
-        log.error(e.message, e)
+        logger.error(e.message, e)
     }
 
-    val reviewRequest = GetReviewsRequest.newBuilder().build()
     try {
-        val response = stub.getReviews(reviewRequest)
-
+        val reviewRequest = GetReviewsRequest.newBuilder().build()
+        val reviewResponse = reviewStub.getReviews(reviewRequest)
         println("Reviews list:")
-        response.reviewList.forEach { review ->
+        reviewResponse.reviewList.forEach { review ->
             println("id: ${review.id}," +
                     " rating: ${review.rating}," +
                     " comment: ${review.comment}," +
                     " created_at: ${review.createdAt}," +
                     " updated_at: ${review.updatedAt}," +
-                    " user_id: ${review.userId}, " +
+                    " user_id: ${review.userId}," +
                     " property_id: ${review.propertyId}"
             )
         }
     } catch (e: Exception) {
-        log.error(e.message, e)
+        logger.error(e.message, e)
     }
 
     channel.shutdown()
-    log.info("channel is closed.")
+    logger.info("Channel is closed.")
 }

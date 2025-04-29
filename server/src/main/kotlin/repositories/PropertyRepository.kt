@@ -3,10 +3,10 @@ package dev.matvenoid.repositories
 import dev.matvenoid.models.property.Property
 import dev.matvenoid.models.property.PropertyDAO
 import dev.matvenoid.models.property.daoToModel
-import dev.matvenoid.models.property.suspendTransaction
+import org.jetbrains.exposed.sql.transactions.transaction
 
 class PropertyRepository {
-    suspend fun getAll(): List<Property> = suspendTransaction {
+    fun getAll(): List<Property> = transaction {
         PropertyDAO.Companion.all().map(::daoToModel)
     }
 }

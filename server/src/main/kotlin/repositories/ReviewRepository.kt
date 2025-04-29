@@ -3,10 +3,10 @@ package dev.matvenoid.repositories
 import dev.matvenoid.models.review.Review
 import dev.matvenoid.models.review.ReviewDAO
 import dev.matvenoid.models.review.daoToModel
-import dev.matvenoid.models.review.suspendTransaction
+import org.jetbrains.exposed.sql.transactions.transaction
 
 class ReviewRepository {
-    suspend fun getAll(): List<Review> = suspendTransaction {
+    fun getAll(): List<Review> = transaction {
         ReviewDAO.Companion.all().map(::daoToModel)
     }
 }

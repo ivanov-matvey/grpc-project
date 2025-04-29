@@ -4,14 +4,11 @@ import dev.matvenoid.models.property.PropertyDAO
 import dev.matvenoid.models.property.PropertyTable
 import dev.matvenoid.models.user.UserDAO
 import dev.matvenoid.models.user.UserTable
-import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.LongIdTable
-import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.kotlin.datetime.date
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 object ReservationTable: LongIdTable("reservations") {
     val startDate = date("start_date")
@@ -28,9 +25,6 @@ class ReservationDAO(id: EntityID<Long>) : LongEntity(id) {
     var user by UserDAO referencedOn ReservationTable.userId
     var property by PropertyDAO referencedOn ReservationTable.propertyId
 }
-
-suspend fun <T> suspendTransaction(block: Transaction.() -> T): T =
-    newSuspendedTransaction(Dispatchers.IO, statement = block)
 
 fun daoToModel(dao: ReservationDAO) = Reservation(
     dao.id.value,
