@@ -1,4 +1,4 @@
-package dev.matvenoid.models.users
+package dev.matvenoid.models.user
 
 import kotlinx.datetime.LocalDate
 

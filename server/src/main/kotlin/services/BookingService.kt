@@ -1,9 +1,9 @@
 package dev.matvenoid.services
 
-import dev.matvenoid.models.properties.PropertyRepository
-import dev.matvenoid.models.reservations.ReservationRepository
-import dev.matvenoid.models.reviews.ReviewRepository
-import dev.matvenoid.models.users.UserRepository
+import dev.matvenoid.repositories.PropertyRepository
+import dev.matvenoid.repositories.ReservationRepository
+import dev.matvenoid.repositories.ReviewRepository
+import dev.matvenoid.repositories.UserRepository
 import dev.matvenoid.proto.BookingServiceGrpcKt
 import dev.matvenoid.proto.GetPropertiesRequest
 import dev.matvenoid.proto.GetPropertiesResponse

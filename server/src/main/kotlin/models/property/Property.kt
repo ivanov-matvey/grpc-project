@@ -1,4 +1,4 @@
-package dev.matvenoid.models.properties
+package dev.matvenoid.models.property
 
 data class Property(
     val id: Long,

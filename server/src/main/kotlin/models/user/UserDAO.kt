@@ -1,9 +1,9 @@
-package dev.matvenoid.models.users
+package dev.matvenoid.models.user
 
-import dev.matvenoid.models.reservations.ReservationDAO
-import dev.matvenoid.models.reservations.ReservationTable
-import dev.matvenoid.models.reviews.ReviewDAO
-import dev.matvenoid.models.reviews.ReviewTable
+import dev.matvenoid.models.reservation.ReservationDAO
+import dev.matvenoid.models.reservation.ReservationTable
+import dev.matvenoid.models.review.ReviewDAO
+import dev.matvenoid.models.review.ReviewTable
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass

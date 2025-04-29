@@ -1,4 +1,4 @@
-package dev.matvenoid.models.reservations
+package dev.matvenoid.models.reservation
 
 import kotlinx.datetime.LocalDate
 

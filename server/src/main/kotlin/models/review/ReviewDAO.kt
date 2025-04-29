@@ -1,9 +1,9 @@
-package dev.matvenoid.models.reviews
+package dev.matvenoid.models.review
 
-import dev.matvenoid.models.properties.PropertyDAO
-import dev.matvenoid.models.properties.PropertyTable
-import dev.matvenoid.models.users.UserDAO
-import dev.matvenoid.models.users.UserTable
+import dev.matvenoid.models.property.PropertyDAO
+import dev.matvenoid.models.property.PropertyTable
+import dev.matvenoid.models.user.UserDAO
+import dev.matvenoid.models.user.UserTable
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass

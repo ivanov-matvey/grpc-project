@@ -1,4 +1,4 @@
-package dev.matvenoid.models.reviews
+package dev.matvenoid.models.review
 
 import kotlinx.datetime.LocalDateTime
 
