@@ -7,5 +7,9 @@ option java_multiple_files = true;
 import "users.proto";
 
 service UserService {
-  rpc GetUsers(GetUsersRequest) returns (GetUsersResponse);
+  rpc CreateUser(UserRequest) returns  (UserResponse);
+  rpc GetUser(UserIdRequest) returns (UserResponse);
+  rpc ListUsers(Empty) returns (ListUsersResponse);
+  rpc UpdateUser(UserRequest) returns (UserResponse);
+  rpc DeleteUser(UserIdRequest) returns (Empty);
 }

@@ -3,10 +3,12 @@ package dev.matvenoid
 import dev.matvenoid.proto.GetPropertiesRequest
 import dev.matvenoid.proto.GetReservationsRequest
 import dev.matvenoid.proto.GetReviewsRequest
-import dev.matvenoid.proto.GetUsersRequest
+import dev.matvenoid.proto.Empty
 import dev.matvenoid.proto.PropertyServiceGrpc
 import dev.matvenoid.proto.ReservationServiceGrpc
 import dev.matvenoid.proto.ReviewServiceGrpc
+import dev.matvenoid.proto.UserIdRequest
+import dev.matvenoid.proto.UserRequest
 import dev.matvenoid.proto.UserServiceGrpc
 import io.grpc.ManagedChannelBuilder
 import org.slf4j.LoggerFactory
@@ -26,8 +28,8 @@ fun main() {
     val reviewStub = ReviewServiceGrpc.newBlockingStub(channel)
 
     try {
-        val userRequest = GetUsersRequest.newBuilder().build()
-        val userResponse = userStub.getUsers(userRequest)
+        val userRequest = Empty.newBuilder().build()
+        val userResponse = userStub.listUsers(userRequest)
         println("Users list:")
         userResponse.usersList.forEach { user ->
             println("id: ${user.id}," +
@@ -37,7 +39,72 @@ fun main() {
             )
         }
     } catch (e: Exception) {
-        logger.error(e.message, e)
+        logger.error(e.message)
+    }
+
+    try {
+        val userRequest = UserRequest.newBuilder()
+            .setName("Тест")
+            .setPhone("9991112233")
+            .setBirthday("2000-12-12")
+            .build()
+
+        val userResponse = userStub.createUser(userRequest)
+        print("User created: ")
+        println("id: ${userResponse.user.id}," +
+                " name: ${userResponse.user.name}," +
+                " phone: +7${userResponse.user.phone}," +
+                " birthday: ${userResponse.user.birthday}"
+        )
+    } catch (e: Exception) {
+        logger.error(e.message)
+    }
+
+    try {
+        val userRequest = UserRequest.newBuilder()
+            .setId(50)
+            .setName("Тест2")
+            .setPhone("9991112233")
+            .setBirthday("2000-12-12")
+            .build()
+
+        val userResponse = userStub.updateUser(userRequest)
+        print("User updated: ")
+        println("id: ${userResponse.user.id}," +
+                " name: ${userResponse.user.name}," +
+                " phone: +7${userResponse.user.phone}," +
+                " birthday: ${userResponse.user.birthday}"
+        )
+    } catch (e: Exception) {
+        logger.error(e.message)
+    }
+
+    try {
+        val userRequest = UserIdRequest.newBuilder()
+            .setId(2)
+            .build()
+
+        val userResponse = userStub.getUser(userRequest)
+        print("User: ")
+        println("id: ${userResponse.user.id}," +
+                " name: ${userResponse.user.name}," +
+                " phone: +7${userResponse.user.phone}," +
+                " birthday: ${userResponse.user.birthday}"
+        )
+    } catch (e: Exception) {
+        logger.error(e.message)
+    }
+
+    try {
+        val userRequest = UserIdRequest.newBuilder()
+            .setId(50)
+            .build()
+
+        userStub.deleteUser(userRequest)
+
+        println("User deleted")
+    } catch (e: Exception) {
+        logger.error(e.message)
     }
 
     try {
@@ -53,7 +120,7 @@ fun main() {
             )
         }
     } catch (e: Exception) {
-        logger.error(e.message, e)
+        logger.error(e.message)
     }
 
     try {
@@ -69,7 +136,7 @@ fun main() {
             )
         }
     } catch (e: Exception) {
-        logger.error(e.message, e)
+        logger.error(e.message)
     }
 
     try {
@@ -87,7 +154,7 @@ fun main() {
             )
         }
     } catch (e: Exception) {
-        logger.error(e.message, e)
+        logger.error(e.message)
     }
 
     channel.shutdown()
